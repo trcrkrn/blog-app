@@ -18,13 +18,15 @@ describe('Blog Posts', function() {
     })
 
     it('should list items on GET', function() {
-        return chai.request(server)
+        return chai.request(app)
             .get('/blog-posts')
             .then(function(res) {
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
+                expect(res.body).to.be.a('array');
                 expect(res.body.length).to.be.above(0);
                 res.body.forEach(function(item) {
+                    expect(item).to.be.a('object');
                     expect(item).to.have.all.keys('id', 'title', 'content', 'author', 'publishDate')
                 });
             });
@@ -43,6 +45,7 @@ describe('Blog Posts', function() {
             .send(newPost)
             .then(function(res) {
                 expect(res).to.have.status(201);
+                expect(res).to.be.json;
                 expect(res.body).to.be.a('object');
                 expect(res.body.title).to.have.all.keys(expectedKeys);
                 expect(res.body.title).to.equal(newPost.title);
@@ -78,11 +81,15 @@ describe('Blog Posts', function() {
             });
     });
 
-    it('should delete post on POST', function() {
+    it('should delete post on DELETE', function() {
         return chai.request(app)
         .get('/blog-posts')
         .then(function(res) {
-            expect(res).to.have.status(204);
+            return chai.request(app)
+            .delete(`/blog-posts/${res.body[0].id}`)
+            .then(function(res) {
+                expect(res).to.have.status(204);
+            });
         });
     });
 })
