@@ -47,7 +47,7 @@ describe('Blog Posts', function() {
                 expect(res).to.have.status(201);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a('object');
-                expect(res.body.title).to.have.all.keys(expectedKeys);
+                expect(res.body).to.have.all.keys(expectedKeys);
                 expect(res.body.title).to.equal(newPost.title);
                 expect(res.body.content).to.equal(newPost.content);
                 expect(res.body.author).to.equal(newPost.author)
@@ -68,7 +68,7 @@ describe('Blog Posts', function() {
         return chai.request(app)
             .get('/blog-posts')
             .then(function(res) {
-                const updatetedPost = Object.assign(res.body[0], {
+                const updatedPost = Object.assign(res.body[0], {
                     title: 'Updated Title',
                     content: 'consectetur adipisicing elit'
                 });
