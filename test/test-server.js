@@ -76,7 +76,7 @@ describe('Blog Posts', function() {
                     .put(`/blog-posts/${res.body[0].id}`)
                     .send(updatedPost)
                     .then(function(res) {
-                        expect(res).to.have.status(204);
+                        expect(res).to.have.status(200);
                     });
             });
     });
